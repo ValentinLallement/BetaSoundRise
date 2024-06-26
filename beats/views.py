@@ -10,7 +10,7 @@ def upload_view(request):
     return HttpResponse("Welcome to the beats Page")
 
 @login_required
-def upload_beat(request):
+def upload_beat(request, *args, **kawrgs):
     if request.method == 'POST':
         form = BeatForm(request.POST, request.FILES)
         if form.is_valid():
