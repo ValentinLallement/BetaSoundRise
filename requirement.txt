@@ -1,5 +1,5 @@
 django
 datetime
-os
-glob
 django-dark
+gunicorn
+psycopg2-binary
