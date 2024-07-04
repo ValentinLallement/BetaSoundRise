@@ -16,16 +16,16 @@
             </div>
             <div class="video-info">
                 {% if pulse.artist.rank == 'admin' %}
-                <p style=" color: red;">
-                    <strong>{{ pulse.artist}}</strong>
+                <p style="color: red;">
+                    <strong><a style="color: red;" href="{% url 'accounts:profile' pulse.artist.username %}">{{ pulse.artist }}</a></strong>
                 </p>
                 {% elif pulse.artist.rank == 'diamond' %}
                 <p style=" color: rgb(50, 110, 187);">
-                    <strong>{{ pulse.artist }}</strong>
+                    <strong><a style=" color: rgb(50, 110, 187);" href="{% url 'accounts:profile' pulse.artist.username %}">{{ pulse.artist }}</a></strong>
                 </p>
                 {% else %}
                 <p>
-                    <strong>{{ pulse.artist }}</strong>
+                    <strong><a style=" color: rgb(255, 255, 255);" href="{% url 'accounts:profile' pulse.artist.username %}">{{ pulse.artist }}</a></strong>
                 </p>
                 {% endif %}
                 <h5><strong>{{ pulse.title }}</strong></h5>
@@ -33,6 +33,7 @@
             </div>
             <a href="{% url 'pulse:upload_pulse' %}" class="navbar-top-item"  style="color: rgb(255, 255, 255); padding: 7px 0px; position:absolute; top:20px; left:-180px;">Upload one ??</a>
             <div class="video-button">
+                
                 <form method="POST">
                     {% csrf_token %}
                     {% if request.user.is_authenticated %}
