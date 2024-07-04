@@ -1,7 +1,0 @@
-django
-datetime
-django-dark
-gunicorn
-psycopg2-binary
-bcrypt
-pillow
