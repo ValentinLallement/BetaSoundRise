@@ -28,8 +28,10 @@
                 </div>
 
                 <a href="{% url 'accounts:profile' %}" class="navbar-top-item"  style="color: rgb(255, 255, 255); padding: 7px 0px;">Profile</a>
+                <a href="{% url 'pulse:feed' %}" class="navbar-top-item" style="color: rgb(255, 255, 255); padding: 7px 0px;">Pulse feed</a>
             {% else %}
                 <a href="{% url 'accounts:explore' %}" class="navbar-top-item" style="color: rgb(255, 255, 255); padding: 7px 0px;">Explore</a>
+                <a href="{% url 'pulse:feed' %}" class="navbar-top-item" style="color: rgb(255, 255, 255); padding: 7px 0px;">Pulse feed</a>
                 <div>
                     <form method="GET" class="w-100 d-flex">
                         {% csrf_token %}
@@ -54,6 +56,5 @@
             {% endif %}
         </div>
     </nav>
-
 
 {% endblock topbar %}

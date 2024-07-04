@@ -5,5 +5,5 @@ app_name = 'pulse'
 
 urlpatterns = [
     path('feed/', views.feed_view, name='feed'),
-    path('upload_pulse', views.upload_pulse_view, name='upload_pulsed')
+    path('upload_pulse', views.upload_pulse_view, name='upload_pulse'),
 ]

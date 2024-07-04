@@ -9,13 +9,54 @@
                 <source src="{{ pulse.video.url }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <div class="video-info">
-                <h2>{{ pulse.title }}</h2>
-                <p>Uploaded by: {{ pulse.artist }}</p>
-                <p>{{ pulse.description }}</p>
-                <p>Views: {{ pulse.views.count }}</p>
-                <p>Likes: {{ pulse.likes.count }}</p>
+            <div class="play-button" onclick="togglePlayPause(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
             </div>
+            <div class="video-info">
+                {% if pulse.artist.rank == 'admin' %}
+                <p style=" color: red;">
+                    <strong>{{ pulse.artist}}</strong>
+                </p>
+                {% elif pulse.artist.rank == 'diamond' %}
+                <p style=" color: rgb(50, 110, 187);">
+                    <strong>{{ pulse.artist }}</strong>
+                </p>
+                {% else %}
+                <p>
+                    <strong>{{ pulse.artist }}</strong>
+                </p>
+                {% endif %}
+                <h5><strong>{{ pulse.title }}</strong></h5>
+                <p>{{ pulse.description }}</p>
+            </div>
+            <a href="{% url 'pulse:upload_pulse' %}" class="navbar-top-item"  style="color: rgb(255, 255, 255); padding: 7px 0px; position:absolute; top:20px; left:-180px;">Upload one ??</a>
+            <div class="video-button">
+                <form method="POST">
+                    {% csrf_token %}
+                    {% if request.user.is_authenticated %}
+                    <input type="hidden" name="pulse_id" value="{{ pulse.id }}">
+                    <button type="submit" class="like-button">
+                        {% if request.user in pulse.likes.all %}
+                        <i class="fa-solid fa-heart fa-xl" style="color: #c03535;"></i>
+                        {% else %}
+                        <i class="fa-regular fa-heart fa-xl" style="color: #f8f8f8;"></i>
+                        {% endif %}
+                        <span class="like-count" style="color: #fff; margin-top:20px;">{{ pulse.like_count }}</span>
+                    </button>
+                    {% else %}
+                    <div class="like-button">
+                        <i class="fa-regular fa-heart fa-xl" style="color: #f8f8f8;"></i>
+                        <span class="like-count" style="color: #fff; margin-top:20px;">{{ pulse.like_count }}</span>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+            <form id="view-form-{{ pulse.id }}" method="POST" style="display: none;">
+                {% csrf_token %}
+                <input type="hidden" name="pulse_id" value="{{ pulse.id }}">
+            </form>
         </div>
         {% endfor %}
     </div>
@@ -69,53 +110,46 @@
             }
         }
     }
+
+    function togglePlayPause(button) {
+        const videoContainer = button.closest('.video');
+        const videoPlayer = videoContainer.querySelector('.video-player');
+
+        if (videoPlayer.paused) {
+            videoPlayer.play();
+            button.style.display = 'none'; // Hide play button when playing
+        } else {
+            videoPlayer.pause();
+            button.style.display = 'flex'; // Show play button when paused
+        }
+    }
+
+    // view count increment 
+    document.querySelectorAll('.video-player').forEach(player => {
+        player.addEventListener('play', async function(event) {
+            const pulseId = this.closest('.video').querySelector('[name="pulse_id"]').value;
+            const form = document.getElementById(`view-form-${pulseId}`);
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    body: formData,
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to increment view count');
+                }
+                const data = await response.json();
+                if (data.status === 'success') {
+                    const pulseViewCount = document.querySelector(`#pulse-view-count-${pulseId}`);
+                    pulseViewCount.textContent = parseInt(pulseViewCount.textContent) + 1;
+                } else {
+                    console.error(data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+        });
+    });
 </script>
 
-<style>
-    /* CSS styles for pulse.html */
-    .video-feed {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .video {
-        position: relative;
-        margin-bottom: 20px;
-        width: auto;
-    }
-    
-    .video-player {
-        width: auto;
-        height: 100%%;
-        display: block;
-        margin: 0 auto;
-    }
-    
-    .video-info {
-        position: absolute;
-        bottom: 100px;
-        left: 0px;
-        color: #fff;
-        background-color: rgba(0, 0, 0, 0.5);
-        padding: 5px;
-    }
-    
-    .video-info h2,
-    .video-info p {
-        margin: 0;
-        font-size: 16px;
-    }
-    
-    .video-info p {
-        margin-top: 5px;
-    }
-    .video-feed-container {
-    margin-top: 0px; /* Adjust as needed to accommodate the top bar height */
-    padding: 0px;
-    max-height: calc(100vh - 60px); /* Ensure the video feed is scrollable within the viewport */
-    overflow-y: auto; /* Enable vertical scrolling for overflow content */
-
-}
-</style>
 {% endblock content %}

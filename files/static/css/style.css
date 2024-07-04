@@ -5322,3 +5322,104 @@ background-color: #1b1b1bFF;
 .pointerCursor{
 cursor: pointer;
 }
+
+
+
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+
+/* CSS styles for pulse.html */
+.video-feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.video {
+  position: relative;
+  margin-bottom: 20px;
+  width: auto;
+}
+
+.video-player {
+  width: auto;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.video-info {
+  position: absolute;
+  bottom: 100px;
+  left: 0px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+
+}
+
+.video-info h2,
+.video-info p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.video-info p {
+  margin-top: 5px;
+}
+.video-feed-container {
+  margin-top: 0px; /* Adjust as needed to accommodate the top bar height */
+  margin-bottom: 10px;
+  max-height: calc(100vh - 60px); /* Ensure the video feed is scrollable within the viewport */
+  overflow-y: auto; /* Enable vertical scrolling for overflow content */
+  overflow: hidden;
+}
+.video-button {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom:260px;
+  right:10px;
+}
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  display: none; 
+  z-index: 10; 
+}
+.like-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  text-align: center; /* Center text horizontally */
+  background: none;
+  border: none;
+  cursor: pointer; /* Show pointer cursor on hover */
+}
+.fa-heart{
+  margin-bottom: 10px;
+}
+.like-button .fa-heart {
+  margin-bottom: 4px; /* Space between heart icon and like count */
+}
+
+.like-button .like-count {
+  font-size: 14px; /* Adjust font size of the like count */
+}
+.like-count{
+  color: #fff;
+}
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------- pulse --------------------------------------------------------------------------------------------*/

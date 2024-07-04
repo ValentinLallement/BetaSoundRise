@@ -33,6 +33,7 @@ def login_view(request):
 
 def register_view(request):
     print(os.path.join(BASE_DIR, 'files', 'static/'))
+    error_message = ""
     register_form = RegisterForm()
     if request.method == 'POST':
         register_form = RegisterForm(request.POST)
