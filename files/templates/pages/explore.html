@@ -69,25 +69,39 @@
 
 <!-- Main Content -->
 <main id="main-content" class="col-12" style="overflow: auto;">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="width: 1200px; margin-left: 40px;">
-        <a href="{% url 'accounts:search_beatmakers' %}" style="color: #fff;">Search Beatmakers</a>
-        <form method="GET" class="w-100">
-            {% csrf_token %}
-            <div class="input-group" style="width: 500px; margin-left: 100px;">
-                <input class="form-control" type="text" id="genre" name="genre" value=""style="color: #fff; display: none;">
-                <input class="form-control" type="date" id="release_date" name="release_date" value=""style="color: #fff; display: none;">
-                <input class="form-control" type="text" id="artist" name="artist" value="" style="color: #fff; display: none;">
-                <div>
-                    <input type="text" id="search" name="search" class="form-control" placeholder="Search..." value="" >
-                    <button type="submit" class="searchbtn">Search</button>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="width: 80%; margin-left: 40px; justify-content: space-between;">
+
+        <div>
+            <a href="{% url 'accounts:search_beatmakers' %}" style="color: #fff;">Search Beatmakers</a>
+            <form method="GET" class="w-100">
+                {% csrf_token %}
+                <div class="input-group" style="width: 500px; margin-left: 100px;">
+                    <input class="form-control" type="text" id="genre" name="genre" value=""style="color: #fff; display: none;">
+                    <input class="form-control" type="date" id="release_date" name="release_date" value=""style="color: #fff; display: none;">
+                    <input class="form-control" type="text" id="artist" name="artist" value="" style="color: #fff; display: none;">
+                    <div>
+                        <input type="text" id="search" name="search" class="form-control" placeholder="Search..." value="" >
+                        <button type="submit" class="searchbtn">Search</button>
+                    </div>
                 </div>
-                
+            </form>
+        </div>
+
+        <div>
+            <div style="display: flex;">
+                <i class="fa-solid fa-square" style="color: #ffffff; margin: 2px;"></i>
+                <i class="fa-solid fa-square" style="color: #ffffff; margin: 2px;"></i>
             </div>
-        </form>
+            <div style="display: flex; margin-top: 1px;">
+                <i class="fa-solid fa-square" style="color: #ffffff; margin: 2px; margin-top: 0px;"></i>
+                <i class="fa-solid fa-square" style="color: #ffffff; margin: 2px; margin-top: 0px;"></i>
+            </div>
+        </div>
+        
     </div>
 
     <!-- Content Area with Beats -->
-    <div class="content-area" style="height: calc(100vh - 220px); overflow-y: auto; margin-top: 20px; padding: 20px;">
+    <div class="content-area" style="height: calc(100vh - 120px); overflow-y: auto; margin-top: 20px; padding: 20px;">
         {% if beats %}
         {% for beat in beats %}
         <a href="{% url 'accounts:detail_beat' beat.id %}" style="color: #fff;">
@@ -167,7 +181,7 @@
                                                     </div>
                                                 </button>
                                             {% else %}
-                                                <button type="submit" name="like_button" style="background: none; border: none;" onclick="updateViews({{ beat.id }})">
+                                                <button type="submit" name="like_button" style="background: none; border: none;">
                                                     <div style="display: flex; align-items: center; color: #ffffff;">
                                                         <i class="fa-regular fa-heart fa-xs" style="color: #f8f8f8; margin-right: 4px;"></i>
                                                         <span style="font-size: 12px;">{{ beat.like_count }}</span>
@@ -215,179 +229,7 @@
 </div>
 
 <style>
-    h1 {
-        font-size: 200%;
-    }
 
-    .gradientDiv {
-        position: absolute;
-        top: 50px;
-        left: 0;
-        transform: translate(-50%, -50%);
-        -webkit-mask-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 1)), """oui c'est rouge mais c'est juste la couleur c juste tkt"""
-            to(rgba(0, 0, 0, 0)));
-        mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-    }
-
-    audio {
-        display: none;
-    }
-
-    audio::-webkit-media-controls-panel {
-        background-color: rgb(51, 51, 51);
-    }
-
-    .audio-controls {
-        display: flex;
-        margin-top: 5px;
-        width: 500px;
-    }
-
-    .audio-controls button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 5px 10px;
-        margin-right: 5px;
-        cursor: pointer;
-    }
-
-    .play-btn {
-        position: relative;
-        height: 34px;
-    }
-
-    .audio-controls button:hover {
-        background-color: #0056b3;
-    }
-
-    #THEDIV {
-        transition: all 0.1s ease-in;
-    }
-    .beatArtist:hover {
-        text-decoration: underline;
-        cursor: pointer;
-    }
-    #THEDIV:hover {
-        -webkit-box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 0.61);
-        box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 0.31);
-        margin-bottom: 2px;
-        background-color: #2d373f5d;
-    }
-
-#searchnone{
-    display: none;
-}
-#search{
-    border-radius: 50px;
-    border: none;
-    outline: none;
-    width: 400px;
-}
-.searchbtn
-{
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-    border: none;
-    padding-right: 11px;
-    position: absolute;
-    top: 1px;
-    left: 338px;
-    padding: 6px 1px;
-    background-color: #2d373f00;
-    color: #fff;
-}
-select:focus {
-    outline: none;
-    border: none; /* Optional: removes the border entirely */
-    box-shadow: none; /* Optional: removes any box-shadow */
-}
-
-    #arrowdiv:hover {
-      background-color: #1b1b1bFF;
-    }
-    #sidebar {
-        background-color: rgb(29, 29, 29);
-        transition: transform 0.3s ease-in-out;
-        z-index: 1000;
-    }
-    #sidebar.collapsed {
-        transform: translateX(-320px); /* Collapsed position */
-        display: none;
-    }
-    .seekbar {
-        position: relative;
-        width: 160px;
-        margin-top: 4px;
-        background-color: #66666600;
-    }
-
-    .audio-controls button {
-        background-color: #ffffff00;
-        height: 34px;
-        width: 34px;
-    }
-
-    .audio-controls:hover button:hover {
-        background-color: #ffffff31;
-        border-radius: 3px;
-    }
-    #arrowdiv {
-        position: relative;
-        height: 100%;
-        width: 80px;
-        background-color: #1b1b1b00;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease-in-out; /* Ensure transition is defined */
-        padding: 0 8px;
-        left: 0%;
-        transform: translate(0%, 0%);
-        cursor: pointer;
-        z-index: 1100;
-    }
-
-    #arrowdiv.collapsed {
-        left: -320px; /* Adjusted left position when collapsed */
-    }
-
-    #arrowdiv:hover {
-        background-color: #1b1b1bFF;
-    }
-
-    #sidebar {
-        background-color: rgb(29, 29, 29);
-        transition: transform 0.3s ease-in-out; /* Ensure transition is defined */
-        z-index: 1000;
-    }
-
-    #sidebar.collapsed {
-        transform: translateX(-320px); /* Collapsed position */
-    }
-
-    #main-content {
-        transition: transform 0.3s ease-in-out; /* Ensure transition is defined */
-    }
-
-    #main-content.collapsed {
-        transform: translateX(-300px); /* Adjusted transform value when sidebar collapsed */
-    }
-    .col-12 {
-        width: 100%;
-    }
-    .noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
-}
-.pointerCursor{
-    cursor: pointer;
-}
 
 </style>
 
@@ -439,27 +281,6 @@ function togglePlayPause(beatId) {
           playIcon.style.display = 'inline-block';
           pauseIcon.style.display = 'none';
       }
-          // Ajax call to update views
-    var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{% url "beats:update_views" %}', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('X-CSRFToken', csrftoken);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            if (response.success) {
-                console.log('Views updated successfully:', response.views);
-            } else {
-                console.error('Failed to update views:', response.error);
-            }
-        }
-    };
-    xhr.send('beat_id=' + beatId);
-
-  }
-  function updateViews(beatId) {
-
           // Ajax call to update views
     var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     var xhr = new XMLHttpRequest();

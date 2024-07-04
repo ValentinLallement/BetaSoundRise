@@ -38,7 +38,7 @@ def register_view(request):
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
             register_form.save()
-            return redirect('content/home/', permanent=True)
+            return render(request, 'pages/login.html', {'form': register_form, 'error_message': error_message})
     return render(request, 'pages/register.html', {'form': register_form})
 
 def logout_view(request):

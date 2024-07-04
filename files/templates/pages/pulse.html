@@ -1,0 +1,121 @@
+{% extends 'layout/layout.html' %}
+
+{% block content %}
+<div class="video-feed-container">
+    <div class="video-feed">
+        {% for pulse in pulses %}
+        <div class="video">
+            <video class="video-player" controls>
+                <source src="{{ pulse.video.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-info">
+                <h2>{{ pulse.title }}</h2>
+                <p>Uploaded by: {{ pulse.artist }}</p>
+                <p>{{ pulse.description }}</p>
+                <p>Views: {{ pulse.views.count }}</p>
+                <p>Likes: {{ pulse.likes.count }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // JavaScript for video feed navigation
+    let currentVideo = null;
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowUp') {
+            event.preventDefault(); // Prevent default scrolling behavior
+            scrollVideo('prev');
+        } else if (event.key === 'ArrowDown') {
+            event.preventDefault(); // Prevent default scrolling behavior
+            scrollVideo('next');
+        }
+    });
+
+    // Disable mouse wheel scrolling
+    document.addEventListener('wheel', function(event) {
+        event.preventDefault();
+    }, { passive: false });
+
+    function scrollVideo(direction) {
+        const videos = document.querySelectorAll('.video');
+        const videoPlayers = document.querySelectorAll('.video-player');
+
+        let currentIndex = -1;
+        videoPlayers.forEach((player, index) => {
+            if (!player.paused) {
+                currentIndex = index;
+            }
+        });
+
+        if (currentIndex !== -1) {
+            videoPlayers[currentIndex].pause();
+        }
+
+        if (direction === 'prev') {
+            if (currentIndex > 0) {
+                videos[currentIndex -1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                videoPlayers[currentIndex - 1].play();
+                currentVideo = videoPlayers[currentIndex - 1];
+            }
+        } else if (direction === 'next') {
+            if (currentIndex < videos.length - 1) {
+                videos[currentIndex +1].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                videoPlayers[currentIndex + 1].play();
+                currentVideo = videoPlayers[currentIndex + 1];
+            }
+        }
+    }
+</script>
+
+<style>
+    /* CSS styles for pulse.html */
+    .video-feed {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .video {
+        position: relative;
+        margin-bottom: 20px;
+        width: auto;
+    }
+    
+    .video-player {
+        width: auto;
+        height: 100%%;
+        display: block;
+        margin: 0 auto;
+    }
+    
+    .video-info {
+        position: absolute;
+        bottom: 100px;
+        left: 0px;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px;
+    }
+    
+    .video-info h2,
+    .video-info p {
+        margin: 0;
+        font-size: 16px;
+    }
+    
+    .video-info p {
+        margin-top: 5px;
+    }
+    .video-feed-container {
+    margin-top: 0px; /* Adjust as needed to accommodate the top bar height */
+    padding: 0px;
+    max-height: calc(100vh - 60px); /* Ensure the video feed is scrollable within the viewport */
+    overflow-y: auto; /* Enable vertical scrolling for overflow content */
+
+}
+</style>
+{% endblock content %}

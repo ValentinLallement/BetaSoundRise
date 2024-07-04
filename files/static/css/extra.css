@@ -125,7 +125,7 @@ input[type="range"] {
     }
 
     .audio-controls button {
-        background-color: #007bff;
+        background-color: #007bff00;
         color: #fff;
         border: none;
         padding: 5px 10px;
@@ -133,7 +133,7 @@ input[type="range"] {
     }
 
     .audio-controls button:hover {
-        background-color: #0056b3;
+        background-color: #e6e6e600;
     }
 
     .progress {
@@ -261,3 +261,4 @@ input[type="range"] {
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Custom box-shadow */
             background-color: rgb(51, 51, 51);
         }
+

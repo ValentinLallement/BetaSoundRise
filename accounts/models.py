@@ -15,6 +15,7 @@ class CustomUser(AbstractUser):
     rank = models.CharField(default='basic', max_length=30)
     followers = models.ManyToManyField('self', symmetrical=False, related_name='following', blank=True)
     like_number = models.IntegerField(default=0)
+    beta_allowed = models.BooleanField(default=True)
 
 
     def subscription_count(self):

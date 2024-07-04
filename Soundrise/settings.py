@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+import json
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +25,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-secret-key')
+if not DEBUG:
+    with open('/etc/config.json') as config_file:
+        config = json.load(config_file)
+    SECRET_KEY = config['SECRET_KEY']
+else:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    # ADMIN PASTE HERE ! 
+    SECRET_KEY = "django-insecure-y- fzh5kfn1jm-i)8s+d^kk_@#ehtuzb+m@jus74!5!)7ezga2"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.1.26','192.168.1.77']
+
+if DEBUG:
+    ALLOWED_HOSTS = ['192.168.1.26','localhost','127.0.0.1']
+    #   > manage.py runserver 192.168.1.26:8000
+else:
+    ALLOWED_HOSTS = ['soundrise.fr', 'www.soundrise.com', 'localhost', '127.0.0.1','85.215.209.167']
 
 LOGIN_REDIRECT_URL = 'success'
 LOGOUT_REDIRECT_URL = 'login'
@@ -48,6 +62,7 @@ INSTALLED_APPS = [
     'content',
     'dark',
     'transaction',
+    'pulse',
 ]
 
 MIDDLEWARE = [
@@ -95,15 +110,15 @@ DATABASES = {
     }
 }
 
-# Use HTTPS in production
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+if not DEBUG:
 
-# Other security settings
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
 
 LOGGING = {
     'version': 1,
@@ -163,7 +178,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files/media')
 print("MEDIA_ROOT" + str(MEDIA_ROOT))
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

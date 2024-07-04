@@ -11,6 +11,7 @@ urlpatterns = [
     path('beats/', include('beats.urls')),
     path('beatmakers/', include('beatmakers.urls')),
     path('accounts/', include('accounts.urls')),
+    path('pulse/', include('pulse.urls')),
 ]
 
 #urls.py
