@@ -2,7 +2,7 @@
 {% block content2 %}
 
 <div class="onglet-def">
-    <div class="profil-def"style="height: 520px;" >
+    <div class="profil-def" >
         <div class="profil2-def" >
             <a href="{% url 'accounts:profile' %}">Profil</a>
         <img  src="{{ user.profile_picture }}" class="logo-def" alt="Profile Picture"></img>
@@ -22,26 +22,82 @@
                     
         <div class = "formulaire-def">
             <div class = form1-def>
-                <h1 class = "perso">Informations personnelles</h1> 
-                <form class = "form-def" method="post" > 
-                    {%csrf_token%} 
-                    <label for="nom-input">Full name</label>
-                    <input type="text" name="full_name" id="id_full_name" value="{{user.full_name}}" class = "exemple" placeholder ="Nom" ></input>
+                <h1 class = "perso" style="margin-bottom: 20px; margin-left: 25px;white-space: nowrap;">Informations personnelles</h1> 
+                <form class = "form-def" method="post"  style="margin-top: 128px;"> 
+                    {%csrf_token%} Full name
+                    <label class="label-def-1">
+                        <span class="icon-def-1">
+                            <i class="fa-solid fa-signature fa-sm" style="color: #ffffff;margin-right: 7px;"></i>
+                      </span>
+                      <input
+                        type="text"
+                        class="input-def-1"
+                        placeholder="Enter full name"
+                        autocomplete="off"
+                        id="id_full_name"
+                        value="{{user.full_name}}"
+                      />
+                    </label>Username
+                    <label class="label-def-1">
+                    <span class="icon-def-1">
+                        <i class="fa-regular fa-user fa-sm" style="color: #ffffff;margin-right: 10px;"></i>
+                      </span>
+                      <input
+                        type="text"
+                        class="input-def-1"
+                        placeholder="Enter username"
+                        autocomplete="off"
+                        id="id_username"
+                        value="{{user.username}}"
+                      />
+                    </label>
+                    Phone
+                    <label class="label-def-1">
+                        <span class="icon-def-1">
+                            <i class="fa-solid fa-phone fa-sm" style="color: #ffffff;margin-right: 9px;"></i>
+                        </span>
+                        <input
+                          type="number"
+                          class="input-def-1"
+                          placeholder="Enter phone number"
+                          autocomplete="off"
+                          id="id_tel"
+                          value="{{user.tel}}"
+                        />
+                    </label>
+                    
 
-                    <label for="nom-input">Username</label>
-                    <input type="text" name="username" id="id_username" value="{{user.username}}" class = "exemple" placeholder ="Nom" ></input>
+                    Email
+                    <label class="label-def-1">
+                        <span class="icon-def-1">
+                            <i class="fa-regular fa-envelope fa-sm" style="color: #ffffff;margin-right: 10px;"></i>
+                        </span>
+                        <input
+                          type="text"
+                          class="input-def-1"
+                          placeholder="Enter email"
+                          autocomplete="off"
+                          id="id_email"
+                          value="{{user.email}}"
+                        />
+                      </label>
+                      password
+                      <label class="label-def-1">
+                        <span class="icon-def-1">
+                            <i class="fa-solid fa-unlock-keyhole fa-sm" style="color: #ffffff; margin-right: 10px;"></i>
+                        </span>
+                        <input
+                          type="password"
+                          class="input-def-1"
+                          placeholder="Enter password"
+                          autocomplete="off"
+                          id="id_password"
+                          value="{{beatmakers.email_pro}}"
+                        />
+                      </label> 
 
-                    <label for="nom-input">Phone number</label>
-                    <input type="tel" name="tel" id="id_tel" class = "exemple" value="{{user.tel}}" placeholder ="06 11 22 33 44"></input>
-
-                    <label for="nom-input">Mail</label>
-                    <input type="email" name="email" id="id_email" value="{{user.email}}"  class = "exemple"  placeholder ="nom.prenom@gmail.com"></input>
-
-                    <label for="nom-input">Password</label>
-                    <div class ="exemple2">********</div> 
-
-                    <label for="nom-input">Country</label>
-                    <select type="text" name="country" id="id_country"   class = "select-def"  placeholder ="Choisisez un pays">
+                    <label for="label-def-1">Country</label>
+                    <select type="text" name="country" id="id_country"   class = "select-def"  placeholder ="Choisisez un pays" style="margin-bottom: 30px; width: 250px; height: 150px;">
                     <option >{{user.country}}</option>
                     <option value="Albanie">Albanien</option>
                     <option value="Arménie">Arménien</option>
@@ -91,23 +147,124 @@
                     <option value="Turquie">Turc</option>
                     <option value="Ukraine">Ukrainien</option>
                 </select>
-                <input type="submit" class="send-def">
+                <button type="submit" class="button-re">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-arrow-repeat"
+                      viewBox="0 0 16 16"
+                      margin-left="10px"
+                    >
+                      <path
+                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+                      ></path>
+                      <path
+                        fill-rule="evenodd"
+                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+                      ></path>
+                    </svg>
+                    Refresh
+                  </button>
                 </form>
             </div>
             <div class = "form2-def">
-                <h1 class = "perso2">Informations professionelles</h1> 
+                <h1 class = "perso2" style=" margin-left: 15px;white-space: nowrap;">Informations professionelles</h1> 
                 <form class = "forme-def" method="post" >
                     {%csrf_token%}
-                    <label for="nom-input" >Mail pro</label>
-                    <input type="email" name="mail_pro" id="id_mail_pro" class = "exemple" value="{{accounts.mail_pro}}"  class = "exemple"  placeholder ="nom.pro@gmail.com"></input>
-                    
-                    <input type="submit" class="send-def">
+                    <label class="label-def-1">
+                        <span class="icon-def-1">
+                            <i class="fa-regular fa-envelope fa-sm" style="color: #ffffff;margin-right: 10px;"></i>
+                        </span>
+                        <input
+                          type="mail"
+                          class="input-def-1"
+                          placeholder="Enter email pro"
+                          autocomplete="off"
+                          id="id_email_pro"
+                          value="{{accounts.mail_pro}}"
+                        />
+                      </label>
+
+
+                      <button type="submit" class="button-re">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-arrow-repeat"
+                          viewBox="0 0 16 16"
+                          margin-left="10px"
+                        >
+                          <path
+                            d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+                          ></path>
+                          <path
+                            fill-rule="evenodd"
+                            d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+                          ></path>
+                        </svg>
+                        Refresh
+                      </button>
+                      
                 </form>
-                <button class="suppr" onclick="navigate('suppr')" style="white-space: nowrap; width: 200px;background-color: transparent;">Supprimer le comtpe</button>
+                <button class="suppr" onclick="navigate('suppr')" style="white-space: nowrap; width: 200px;background-color: transparent;margin-top: 300px;">Supprimer le comtpe</button>
             </div> 
         </div>
     </div> 
     </div>
     
 </div>
+<style>
+  @media screen and (max-width:1175px) {
+    .formulaire-def{
+      display: flex;
+      flex-direction: column;
+    }
+    .form2-def{
+      margin-top: 100px;
+      margin-left: -5px;
+    }
+    .menu-parametre{
+      width: 220px;
+    }
+    .espace-def{
+      margin-left: 10%;
+    }
+  }
+
+  @media screen and (max-width:917px) {
+    .formulaire-def{
+      display: flex;
+      flex-direction: column;
+      margin-left: -10%;
+    }
+    .form2-def{
+      margin-top: 100px;
+      margin-left: -5px;
+    }
+    .menu-parametre{
+      width: 220px;
+    }
+    .espace-def{
+      margin-left: 5%;
+      align-self: center;
+      width: 90%;
+    }
+    .bio2-def{
+      margin-left: 5%;
+    }
+    .onglet-def{
+      margin-left:5% ;
+      display: flex;
+      flex-direction: column;
+    }
+    .profil-def{
+      align-self: center;
+    }
+  }
+</style>
+
 {% endblock content2 %}
