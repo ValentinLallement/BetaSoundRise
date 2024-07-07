@@ -1,6 +1,7 @@
 {% extends 'pages/parametre.html' %}
 
 {% block content2 %}
+<div style="height: 100%;width: 90%;margin-left: 100px;">
 <h1>Soundrise : Achetez, vendez et promouvez vos beats</h1>
 
     <h2>Présentation</h2>
@@ -37,7 +38,7 @@
 
     <p>Si vous êtes prêt à acheter, vendre ou promouvoir vos beats, inscrivez-vous dès aujourd'hui à Soundrise. C'est gratuit et facile !</p>
 
-    <a href="{% url 'accounts:register'%}" class="btn">Inscription gratuite</a>
+    <a href="{% url 'accounts:register'%}" class="btn" style="color: blue;">Inscription gratuite</a>
 
     <h2>FAQ</h2>
 
@@ -60,5 +61,6 @@
     <h3>Comment puis-je promouvoir mes beats sur Soundrise ?</h3>
 
     <p>Soundrise propose les pulses , le meilleur moyen de promouvoir son contenu .Créer la nouvelle trend</p>
+</div>
 {% endblock content2 %}
 
