@@ -4,11 +4,8 @@
 
   
 <div style="display: flex;flex-direction: row;">
-  {% block side %}
-  {% include "blocks/side.html" %}
-    
-  {% endblock side %}
-  <nav id="sidebar" class="col-md-2 d-md-block text-white sidebar" style="background-color: rgb(29, 29, 29); width: 60px; display: flex; flex-direction: column;">
+
+  <nav id="sidebar" class="col-md-2 d-md-block text-white sidebar" style="background-color: rgb(29, 29, 29); width: 60px;height :100%; display: flex; flex-direction: column;">
     <div class="position-sticky pt-3" style="flex-grow: 1;">
         <h5 class="text-center">Side Menu</h5>
         <ul class="nav flex-column">
@@ -76,9 +73,9 @@
                       
   
                     </button>
-                                    </div>
+                  </div>
                     
-                  <div style="max-height:200px ;height: 200px;width: 600px; align-self: end;overflow-y: scroll; display: flex ;flex-direction: column; margin-top: 10px;">
+                  <div style=" height: 200px;width: 600px; align-self: end;overflow-y: scroll; display: flex ;flex-direction: column; margin-top: 10px;">
                       {% for beat in model.beats %}
                         <div style="height: 95px; width: 100%; display: flex; flex-direction: row; justify-content: space-between;">
                          
@@ -93,7 +90,7 @@
                           {% if beat.audio_file_url %}
                       <div style="display: flex;flex-direction: column; width: 550px; align-items: end;">
                       
-                      <div style="width: 300px; margin-top: 10px; ;">
+                      <div style="width: 300px; margin-top: 10px; ">
                           <audio id="audio_{{ beat.id }}" controls style="width: 100%;" ontimeupdate="updateProgressBar({{ beat.id }})">
                               <source src="{{ beat.audio_file_url }}" type="audio/mp3">
                               Your browser does not support the audio element.
@@ -124,7 +121,8 @@
           
                         
                       </div>
-                        <div style="height: 2px;width: 100%;background-color: white;margin-top: -20px;margin-bottom: 20px;"></div>
+                      <div style="height: 2%;width: 100%;background-color: white;margin-top: -20px;margin-bottom: 20px;"></div>
+                      
                         
                         
                     {% endfor %}
