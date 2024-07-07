@@ -1,595 +1,347 @@
-  {% extends 'pages/parametre.html' %}
-  {% block content2 %}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <div class = "onglet-parametre-default">
-      <div class="revenus">
-        
-          <div class="graph">
-              <div class="graph2"  >
-                
-                <canvas id="chart"></canvas>
-                
+{% extends 'layout/layout.html' %}
 
+{% block content %}
+
+  
+<div style="display: flex;flex-direction: row;">
+  {% block side %}
+  {% include "blocks/side.html" %}
+    
+  {% endblock side %}
+  <nav id="sidebar" class="col-md-2 d-md-block text-white sidebar" style="background-color: rgb(29, 29, 29); width: 60px; display: flex; flex-direction: column;">
+    <div class="position-sticky pt-3" style="flex-grow: 1;">
+        <h5 class="text-center">Side Menu</h5>
+        <ul class="nav flex-column">
+        </ul>
+        <form method="GET" class="mt-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="sort_by" class="form-label">Sort By:</label>
+                <select name="sort_by" class="form-control">
+                    <option value="default">Default</option>
+                    <option value="price">Distance</option>
+                    
+                </select>
+            </div>
+            <div class="mb-3">
+                <br>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
+        </form>
+    </div>
+  </nav>
+  <div style="width: 1500px;">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="width: 1200px; margin-left: 40px;">
+    <a href="{% url 'accounts:explore' %}" style="white-space: nowrap;color: #fff">Search Beats</a>
+    <form method="GET" class="w-100">
+        {% csrf_token %}
+        <div class="input-group" style="width: 500px; margin-left: 145px;">
+            <input type="text" id="search" name="search" class="form-control" placeholder="Search..." value="{{ search_term }}"  >
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+  </div>
+  
+  <div class="col-md-10 ms-sm-auto col-lg-10 px-md-4"style="display: flex;flex-direction:column;overflow-y: scroll;height:500px ; align-self:center;width: 1400px; "  >
+    
+    
+      
+      {% if error %}
+      <div class="alert alert-warning" role="alert">
+        {{ error }}
+      </div>
+      {% endif %}
+      {% for model in annotated_models %}
+      <div class="card " style="margin-bottom: 10px ;" >
+          <div class="card-bg" style="display: flex;flex-direction: row;background-color: #1e1e28;border-radius: 20px;">
             
-              </div>
+                
               
-          </div>
-          
-          <div class ="donnees">
-              <div class="donnees2" >
-              <div class="donnees3">Latest Beat
-              <div class="j2">
-                  <div class="j">
-                  <div class="analy">Ecoutes</div>
-                  <div class="data-tab">{{latest_model.title}}</div>
-              
-              </div>  
-              <div class="j">
-                  <div class="analy">Ventes</div>
-                  <div class="data-tab" >600</div>
-                  
-                  
-              </div>
-              <div class="j">
-                  <div class="analy">Revenus</div>
-                  <div class="data-tab">3.4k</div>
-                  
-                  
-              </div>
-              </div>
-              
-              <div >
-                  <div ></div>
-                  <div ></div>
-              </div>
-              </div>
-              </div>
-          </div>
-      </div>
-      
-      <div class = "stats">
-          
-          <div class="stat1">
-              <div class="stat2-1">Ecoutes
-                  
-              <div class="nombre">{{user_account.like_numbers}}</div>
-              <div class="info-tab">en hausse de %</div>
-              </div>
-          </div>
-          <div class="stat1">
-              <div class="stat2-2" >Abonnés
-              <div class="nombre">{{ user_account.follower_count }}</div>
-              <div class="info-tab">en hausse de %</div>
-              </div>
-          </div>
-          <div class="stat1">
-              <div class="stat2-3">Moyenne
-                  <div class="moyennes">
-                  <div class="typ">Ecoutes</div>
-                  <div class="num">103k</div>
-                  </div>
-              
-              <div class="moyennes">
-                  <div class="typ">Ventes</div>
-                  <div class="num">1.6k</div>
-              </div>
-              <div class="moyennes">
-                  <div class="typ" >revenus</div>
-                  <div class="num">20.76k</div> 
-              </div>
-              </div>
-          </div> 
-          
-      </div>
-      
-      <div class="liste-tab">
-          <div class="liste2-tab">
-          <div class="categorie-tab">
-              <div class="infos-tab">Beat</div>
-              <div class="infos-tab">Title</div>
-              <div class="infos-tab">Likes</div>
-              <div class="infos-tab">Price</div>
-              <div></div>
-          </div>
-          <div class="beatinfos">
-              
-                  {% if uploaded_beats %}
-                      {%for beat in uploaded_beats%}
-                      <div class="li-tab">
-                      <img class="inf1" src="{{beat.cover_image.url}}"></img>
-                      <h6 class ='inf2'>{{beat.title}}</h6> 
-                      <div class="inf2">
-                          
+                <img  class="img-fluid rounded-circle mb-3 square-image-big" src="{{ model.beatmaker.profile_picture }}" alt="profile_picture" style="height: 100px;width: 100px; margin: 20px;" >
+                  <div style="display: flex;flex-direction: column; margin: 20px; width:300px ;" class="card-apercu-beatmakers">
+                    <h3 class="card-title" >{{ model.beatmaker.username }}  </h3>
+                    <h6 class="card-title">{{ model.beatmaker.profile_free_text }}</h6>
+                    
+                    <button class="button-sub">
+  
                       
-                              
-                              <svg fill="white" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"></path></svg>
-                              <h6 class ='inf2'>10k</h6>
-                              
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
+                      </svg>
+  
+                      
+                      <div class="text-sub">
+                        Subscribe
+                      </div>
+                      
+  
+                    </button>
+                                    </div>
+                    
+                  <div style="max-height:200px ;height: 200px;width: 600px; align-self: end;overflow-y: scroll; display: flex ;flex-direction: column; margin-top: 10px;">
+                      {% for beat in model.beats %}
+                        <div style="height: 95px; width: 100%; display: flex; flex-direction: row; justify-content: space-between;">
+                         
+                          
+                          <img style="height: 50px;width: 50px;" src="{{ beat.cover_image.url }}" class="square-image-small coverimage"></img>
+                          <div style="display: flex; flex-direction: column;">
+                          <h6 style="height: 25px;margin-left: 20px;margin-bottom: 5px; ">{{ beat.title }}</h4>
+                          <h6 style="height: 10px;font-size: 13px; margin-left: 20px;margin-top:10px ;">{{ beat.genre }}</h6>
+                          
+                          </div>
+                          <a href="{% url 'accounts:detail_beat' beat.id %}" style="margin-left: 35px;margin-top: 35px;">Details</a>
+                          {% if beat.audio_file_url %}
+                      <div style="display: flex;flex-direction: column; width: 550px; align-items: end;">
+                      
+                      <div style="width: 300px; margin-top: 10px; ;">
+                          <audio id="audio_{{ beat.id }}" controls style="width: 100%;" ontimeupdate="updateProgressBar({{ beat.id }})">
+                              <source src="{{ beat.audio_file_url }}" type="audio/mp3">
+                              Your browser does not support the audio element.
+                          </audio>
+                          
+                          <div class="audio-controls" style="width: 300px; align-self: flex-end;">
+                              <!-- @ts-ignore -->
+                              <!-- eslint-disable-next-line  -->
+                              <button onclick="togglePlayPause({{ beat.id }})" style="position: relative ;">
+                                  <!-- eslint-enable-next-line -->
+                                  <i id="play_icon_{{ beat.id }}" class="fa-solid fa-play"></i>
+                                  <i id="pause_icon_{{ beat.id }}" class="fas fa-pause" style="display: none;"></i>
+                              </button>
+                              <input type="range" id="seekbar_{{ beat.id }}" min="0" max="{{ beat.duration }}" step="1" value='0' class="seekbar" onchange="seekAudio({{ beat.id }})" oninput="updateSeekbarTooltip(this)">
+                              <div id="seekbar_tooltip_{{ beat.id }}" class="seekbar-tooltip" style=" height: 34px; padding-top: 4px;">0:00</div>
+                          </div>
+                          <progress id="progress_{{ beat.id }}" value="0" max="100" style="opacity: 0%;"></progress>
+                          
                           
                       </div>
-                      <div class="inf3">{{beat.price}}€</div>
-                      </div>
-                      {% endfor %}
-                  {% else %}
-                  <p class="text-muted">No beats uploaded yet.</p>
-                  <a href="{% url 'beats:upload_beat' %}">upload</a>
-                  {% endif %}
-
-              
-
+                    </div>
+                      
+                      {% else %}
+                      <p style="color: #999;">Audio file not found.</p>
+                      {% endif %}
+                          
+                          
           
-              </div>
+                        
+                      </div>
+                        <div style="height: 2px;width: 100%;background-color: white;margin-top: -20px;margin-bottom: 20px;"></div>
+                        
+                        
+                    {% endfor %}
+                    
+                      </div>
+                      
+                       
+  
+                      
+              
+                       
+                            
+                            
+                            
+                        
+        
+                    
+        
+                
+            
+                
+           
+                    
+               
+                  
+                  
+              
           </div>
       </div>
+
+    {% endfor %}
+  </div>
+  </div>
+  </div>
+  
   </div>
   <style>
-    :root {
-      --background: #070707;
-      --background-widget: #181818;
-      --primary: #3DA06E;
+    .button-sub {
+      background-color: #1e1e28;
+    color: #fff;
+    width: 8em;
+    height: 2em;
+    border: #3654ff 0.2em solid;
+    border-radius: 11px;
+    text-align: right;
+    transition: all 0.6s ease;
   }
-
-
-
-  .widget {
-      border-radius: 0.75rem;
-      background-color: var(--background-widget);
-      padding: 1rem;
-      max-width: 40rem;
-      width: 100%;
-      min-width: 20rem;
-  }
-
-  .widget canvas {
-      min-height: 16rem;
-  }
-  .close-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+  
+  .button-sub:hover {
+    background-color: #3654ff;
     cursor: pointer;
   }
-
-  .close-button svg {
-    height: 1rem;
-    width: 1rem;
-    fill: var(--primary);
+  
+  .button-sub svg {
+    width: 1.6em;
+    margin: -0.45em 0.8em 1em;
+    position: absolute;
+    display: flex;
+    transition: all 0.6s ease;
   }
-
-  .close-button:hover {
-    background-color: var(--primary-hover);
+  
+  .button-sub:hover svg {
+    transform: translateX(5px);
   }
-
-  /* Animation styles */
-
-  @keyframes fadeInAnimation {
-    0% {
-      opacity: 0;
-      visibility: hidden;
-      max-width: 0;
+  
+  .text-sub {
+    margin: -0.25em  1.15em;
+    font-size: 12.5px;
+  }
+     .gradientDiv {
+          position: absolute;
+          
+          transform: translate(-50%, -50%);
+          -webkit-mask-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0)), """oui c'est rouge mais c'est juste la couleur c juste tkt"""
+              to(rgba(0, 0, 0, 1)));
+          mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+      }
+    .card{
+      background-color: transparent;
+      width: 1100px;
+      border-radius: 20px;
+      align-items: center;
+      
     }
-
-    100% {
-      opacity: 1;
-      visibility: visible;
-      max-width: 20rem;
-    }
-  }
-
-  @keyframes fadeOutAnimation {
-    0% {
-      opacity: 1;
-      visibility: visible;
-      max-width: 20rem;
-    }
-
-    100% {
-      opacity: 0;
-      visibility: hidden;
-      max-width: 0;
-    }
-  }
-
-  /* Hide and show classes */
-
-  .none {
-    display: none;
-  }
-
-  .hide {
-    animation: fadeOutAnimation ease-in-out 0.5s forwards;
-  }
-      @media screen and (min-width:990px) and (max-width:1170px) {
-    
-          .data-tab{
-              font-size: 20px;
-            width: 10%;
-            margin-left: -50%;
-            margin-top: 10%;
-          }
-          .analy{
-              font-size: 20px;
-              margin-left: -10%;
-          }
-          .typ{
-              font-size: 15px;
-              margin-top: 10%;
-          }
-          .num{
-              font-size: 15px;
-              margin-top: 10%;
-          }
-          .inf1{
-              width: 8%;
-              margin-left: 25px;
-          }
+    .card-bg{
+      width: 1100px;
     }
     
-
-    @media screen and (min-width:701px) and (max-width:989px) {
-    
-    .revenus{
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .graph{
-      width: 80%;
-      align-self: center;
-    }
-    
-    .typ{
-        font-size: 15px;
-        margin-top: 10%;
-    }
-    .num{
-        font-size: 15px;
-        margin-top: 10%;
-    }
-    .j{
-      justify-content: left ;
-      display: flex;
-      flex-direction: column;
-      
-    }
-    .j2{
-      display: flex;
-      flex-direction: row;
-    }
-    .donnees{
-      width: 80%;
-      align-self: center;
-      margin-left: 2%;
-      height: 40%;
-      
-    }
-    .donnees2{
-      width: 101%;
-      margin-left: -0.5%;
-    }
-    .donnees3{
-      width: 100%;
-    }
-    .stat1{
-      width: 27%;
-    }
-    .liste-tab{
-    width: 80%;
-    margin-left: 10%;
-      
-      
-    }
-    .liste2-tab{
-      margin-left: -0.5%;
-      width: 101%;
-    }
-    .inf1{
-              width: 15%;
-              margin-left: 55px;
-          }
+    .card:hover{
+      background-color: #1e1e28;
+       box-shadow: 0px 0px 16px 8px rgba(0, 0, 0, 0.31);
+       }
+  
+       audio {
+          display: none;
+      }
+  
+      audio::-webkit-media-controls-panel {
+        background-color: #1e1e28;
+      }
+  
+      .audio-controls {
+          display: flex;
+          justify-content: space-around;
+          margin-top: 5px;
+          width: 500px;
+      }
+  
+      .audio-controls button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 5px 10px;
+          margin-right: 5px;
+          cursor: pointer;
+      }
+  
+      .play-btn {
+          position: relative;
+          height: 34px;
+      }
+  
+      .audio-controls button:hover {
+          background-color: #0056b3;
+      }
+  
+      .audio-controls button {
+          background-color: #ffffff00;
+          height: 34px;
+          width: 34px;
+      }
+  
+      .audio-controls:hover button:hover {
+          background-color: #ffffff31;
+          border-radius: 3px;
+      }
+  
+      .col-12 {
+          width: 100%;
+      }
+      .noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
   }
-
-  @media screen and (min-width:576px) and (max-width:700px) {
-    
-    .revenus{
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .graph{
-      width: 80%;
-      height: 40%;
-      align-self: center;
-    }
-    .chiffre{
-      margin-top: -2%;
-    }
-    .ligne2-tab{
-      width: 80%;
-    }
-    .typ{
-        font-size: 10px;
-        margin-top: 15%;
-    }
-    .num{
-        font-size: 10px;
-        margin-top: 15%;
-    }
-    .j{
-      justify-content: left ;
-      display: flex;
-      flex-direction: column;
-      
-    }
-    .j2{
-      display: flex;
-      flex-direction: row;
-    }
-    .donnees{
-      width: 80%;
-      align-self: center;
-      margin-left: 2%;
-      height: 30%;
-      
-    }
-    .donnees2{
-      width: 101%;
-      margin-left: -0.5%;
-    }
-    .donnees3{
-      width: 100%;
-    }
-    .stats{
-      flex-direction: row;
-      height: 35%;
-      width: 25%;
-      margin-left: 38%;
-      
-    }
-    
-    .stat1{
-      width: 100%;
-    }
-    .liste-tab{
-    width: 80%;
-    margin-left: 10%;
-      
-      
-    }
-    .liste2-tab{
-      margin-left: -0.5%;
-      width: 101%;
-    }
-    .analy{
-      font-size: 15px;
-    }
-    .data-tab{
-      font-size: 15px;
-      margin-left: -20px;
-    }
-    .info-tab{
-      font-size: 7px;
-      margin-top:60px;
-      white-space: nowrap;
-    }
-    .inf1{
-              width: 20%;
-              margin-left: 55px;
-          }
-      
-
+  .pointerCursor{
+      cursor: pointer;
   }
-
-
-  @media screen  and (max-width:575px) {
-    
-    .revenus{
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .graph{
-      width: 80%;
-      height: 30%;
-      align-self: center;
-      margin-bottom: 0%;
-    }
-    .chiffre{
-      margin-top: -2%;
-      margin-right: 10px;
-    }
-    .ligne2-tab{
-      width: 80%;
-    }
-    .typ{
-        font-size: 15px;
-        margin-top: 10%;
-    }
-    .num{
-        font-size: 15px;
-        margin-top: 10%;
-    }
-    .j{
-      justify-content: left ;
-      display: flex;
-      flex-direction: column;
-      
-    }
-    .j2{
-      display: flex;
-      flex-direction: row;
-    }
-    .donnees{
-      width: 80%;
-      align-self: center;
-      margin-left: 2%;
-      height: 30%;
-      margin-bottom: 0%;
-      margin-top: 0%;
-      
-    }
-    .donnees2{
-      width: 101%;
-      margin-left: -0.5%;
-    }
-    .donnees3{
-      width: 100%;
-    }
-    .stats{
-      flex-direction: column;
-      height: 150%;
-      width: 50%;
-      margin-left: 25%;
-      
-    }
-    .li-tab{
-      width: 100%;
-    
-    }
-    .inf3{
-      margin-right: 50px;
-    }
-    .inf2{
-      font-size: 10px;
-    }
-    .categorie-tab{
-      padding-left: 20px;
-    }
-    .stat1{
-      width: 100%;
-    }
-    .liste-tab{
-    width: 80%;
-    margin-left: 10%;
-      
-      
-    }
-    .liste2-tab{
-      margin-left: -0.5%;
-      width: 101%;
-    }
-    .analy{
-      font-size: 15px;
-      margin-left: 5%;
-    }
-    .data-tab{
-      font-size: 15px;
-      margin-left: -20px;
-    }
-    .info-tab{
-      font-size: 7px;
-      margin-top:60px;
-      white-space: nowrap;
-    }
-    .inf1{
-              width: 25%;
-              margin-left: -15px;
-          }  
-    .t{
-      margin-top: -10px;
-    } 
-  }
-
-
-
-
-
-
-
-
+  
   </style>
-  <script>const ctx = document.getElementById("chart");
-
-    const chart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: ["2020", "2021", "2022", "2023"],
-        datasets: [
-          {
-            label: "Revenus",
-            data: [15000, 2000, 25000, 30000],
-            backgroundColor: "#13eb16",
-            borderColor: "#ffffff",
-            fill: false,
-            borderRadius: 6,
-            cubicInterpolationMode: "monotone",
-            borderSkipped: false,
-            pointRadius: 6,
-            elements: {
-              point: {
-                radius: 6,
-              },
-            },
-          },
-        ],
-      },
-      options: {
-        maintainAspectRatio: false,
-        responsive: true,
-        plugins: {
-          Legend: {
-            display: false,
-            title: {
-              display: true,
-              text: "Évolution des revenus",
-              padding: {
-                bottom: 16,
-              },
-              font: {
-                size: 16,
-                weight: "normal",
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-            border: {
-              dash: [2, 4],
-            },
-            title: {
-              text: "Année",
-            },
-          },
-          y: {
-            grid: {
-              color: "#272920",
-              border: {
-                dash: [2, 4],
-              },
-            },
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: "Revenus [$]",
-            },
-          },
-        },
-        interaction: {
-          mode: "index",
-          intersect: false,
-        },
-        elements: {
-          line: {
-            tension: 0.4,
-          },
-        },
-        tooltips: {
-          callbacks: {
-            label: function(context) {
-              if (context.parsed.y !== 0) {
-                const label = new Intl.NumberFormat("fr-FR", {
-                  style: "currency",
-                  currency: "EUR",
-                }).format(context.parsed.y);
-                return label;
-              }
-            },
-          },
-        },
-      },
-    });</script>
-  {% endblock content2 %}
+  
+  <script>
+    function togglePlayPause(beatId) {
+        var audio = document.getElementById('audio_' + beatId);
+        var playIcon = document.getElementById('play_icon_' + beatId);
+        var pauseIcon = document.getElementById('pause_icon_' + beatId);
+        var allAudios = document.querySelectorAll('audio');
+    
+        // Pause all other audios
+        allAudios.forEach(function(aud) {
+            if (aud.id !== 'audio_' + beatId) {
+                aud.pause();
+                var otherBeatId = aud.id.split('_')[1];
+                var otherPlayIcon = document.getElementById('play_icon_' + otherBeatId);
+                var otherPauseIcon = document.getElementById('pause_icon_' + otherBeatId);
+                otherPlayIcon.style.display = 'inline-block';
+                otherPauseIcon.style.display = 'none';
+            }
+        });
+    
+        // Toggle play/pause for the selected beat
+        if (audio.paused) {
+            audio.play();
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'inline-block';
+        } else {
+            audio.pause();
+            playIcon.style.display = 'inline-block';
+            pauseIcon.style.display = 'none';
+        }
+    }
+    function seekAudio(beatId) {
+        var audio = document.getElementById('audio_' + beatId);
+        var seekbar = document.getElementById('seekbar_' + beatId);
+        var value = seekbar.value;
+        audio.currentTime = value;
+    }
+    
+    function updateProgressBar(beatId) {
+        var audio = document.getElementById('audio_' + beatId);
+        var progressBar = document.getElementById('progress_' + beatId);
+        var seekbar = document.getElementById('seekbar_' + beatId);
+    
+        var value = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = value;
+        seekbar.value = audio.currentTime;
+    
+        updateSeekbarTooltip(seekbar);
+    }
+    
+    function updateSeekbarTooltip(seekbar) {
+        var tooltip = seekbar.nextElementSibling;
+        var value = seekbar.value;
+        var minutes = Math.floor(value / 60);
+        var seconds = Math.floor(value % 60);
+        var time = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        tooltip.innerHTML = time;
+        tooltip.style.left = (value / seekbar.max) * 100 + '%';
+    }
+    
+  
+  
+  
+  
+  </script>
+{% endblock content %}
